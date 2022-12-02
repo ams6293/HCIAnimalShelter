@@ -1,0 +1,63 @@
+﻿@page
+@model AnimalRescue.Pages.Admin.Animals.AddFavoriteModel
+@{
+}
+@using ApplicationCore.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+<form method="post" enctype="multipart/form-data">
+<div class="DetailsForm">
+    
+    @if (SignInManager.IsSignedIn(User))
+{
+    
+    
+    <p>Hello @User.Identity?.Name! Are you sure you want to add this animal to your favorites?</p>
+    <div>
+        <input type="hidden" asp-for="FavoritesVM.Animal.Id" />
+        <input  type ="hidden" asp-for="FavoritesVM.Customer.Id" />
+        <hr/>
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.FavoritesVM.Animal.Name)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FavoritesVM.Animal.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.FavoritesVM.Animal.Species)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FavoritesVM.Animal.Species)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.FavoritesVM.Animal.Description)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FavoritesVM.Animal.Description)
+            </dd>
+            <dt class="col-sm-2">
+                Age:
+            </dt>
+            <dd class="col-sm-10">
+                @(Model.getAge((Model.FavoritesVM.Animal.DoB)))
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.FavoritesVM.Animal.IsAvailable)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FavoritesVM.Animal.IsAvailable)
+            </dd>
+        </dl>
+    </div>
+    <div>
+    <button type="submit" class="btn btn-primary form-control">Add!</button>|
+        <a asp-page="./Index">Back to List</a>
+    </div>
+    }
+    else
+    {
+    <h1>Please Log In To Add</h1>
+    }
+</div>
+</form>

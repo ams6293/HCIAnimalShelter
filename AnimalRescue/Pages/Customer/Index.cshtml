@@ -1,0 +1,113 @@
+﻿@page
+@model AnimalRescue.Pages.Customer.IndexModel
+@using Microsoft.AspNetCore.Identity
+@using Infrastructure.Utility
+@using ApplicationCore.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
+
+<div>
+    
+    @if (User.IsInRole(SD.CustomerRole))
+    {
+        
+        <p>Hello @User.Identity?.Name!</p>
+        <h2>My Events</h2>
+        @foreach (var eventItem in Model.Enrollments)
+        {
+            <div class="d-inline-flex p-2 bd-highlight">
+                <div class="card border border-primary bg-info text-white" style="width: 18rem;">
+                    <div class="card-header">
+                        <h5 class="text-center mb-0">@Html.DisplayFor(modelItem => eventItem.EventModel.Name)</h5>
+                    </div>
+                    <div class="card-body text-white">
+                                        
+                                       
+                        <p class="text-center">Date: @Html.DisplayFor(modelItem => eventItem.EventModel.Date)</p>
+                        <p class="text-center">Start Time: @Html.DisplayFor(modelItem => eventItem.EventModel.StartTime)</p>
+                        <p class="text-center">End Time: @Html.DisplayFor(modelItem => eventItem.EventModel.EndTime)</p>
+                        <div class="d-flex justify-content-around">
+
+                                        
+
+                                            
+                            <p>
+                                <a asp-page="./Admin/Events/Details" class="btn btn-secondary" asp-route-id="@eventItem.EventModel.Id">Details</a>
+                                <a asp-page="./DeleteEnrollment" class="btn btn-secondary" asp-route-id="@eventItem.EventModelID">Delete</a>
+                            </p>
+                                        
+                             
+                                    
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <hr/>
+        <h2>My Favorites</h2>
+        @foreach (var animal in Model.Favorites)
+        {
+            <div class="d-inline-flex p-2 bd-highlight">
+                <div class="card border border-primary bg-info text-white" style="width: 18rem;">
+                    <div class="card-header">
+                        <h5 class="text-center mb-0">@Html.DisplayFor(modelItem => animal.Animal.Name)</h5>
+                    </div>
+                    <div class="card-body text-white">
+                        <img src="@animal.Animal.Image" class="card-img-top p-2 rounded" style="height: 10rem; width: 15rem;"/>
+                                       
+                        <p class="text-center">Date: @Html.DisplayFor(modelItem => animal.Animal.IsAvailable)</p>
+                    
+                        <div class="d-flex justify-content-around">
+
+                                        
+
+                                            
+                            <p>
+                                <a asp-page="../Admin/Events/Details" class="btn btn-secondary" asp-route-id="@animal.Animal.Id">Details</a>
+                                <a asp-page="./DeleteFavorite" class="btn btn-secondary" asp-route-id="@animal.AnimalId">Delete</a>
+                            </p>
+                                        
+                             
+                                    
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <h1>Please Log In To View Your Profile</h1>
+    }
+ 
+</div>
+
+<script>
+
+    function Delete(url) {
+        swal({
+            title: "Are you sure you want to delete?",
+            text: "You will not be able to restore the data",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    type: 'DELETE',
+                    url: url,
+                    success: function (data) {
+                        if (data.success) {
+                            toastr.success(data.message);
+                            dataTable.ajax.reload();
+                        }
+                        else
+                            toastr.error(data.message);
+                    }
+                })
+            }
+        })
+    }
+</script>

@@ -1,0 +1,78 @@
+﻿@page
+@using Infrastructure.Utility
+@model AnimalRescue.Pages.Admin.Events.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Events</h1>
+
+@if (User.IsInRole(SD.AdminRole))
+{
+ <p>
+        <a asp-page="./Upsert" style=" color:#046b99">Create New</a>
+    </p>
+}
+
+                        @foreach (var eventItem in Model.EventModels)
+                        {
+                            <div class="d-inline-flex p-2 bd-highlight">
+                                <div class="card border border-primary bg-info" style="width: 18rem;">
+                                    <div class="card-header">
+                                        <h5 class="text-center mb-0">@Html.DisplayFor(modelItem => eventItem.Name)</h5>
+                                    </div>
+                                    <div class="card-body"  style="color:#212121;">
+                                        <p class="text-center">Event Name: @Html.DisplayFor(modelItem => eventItem.Name)</p>
+                                        <p class="text-center">Where: @Html.DisplayFor(modelItem => eventItem.Venue.Name)</p>
+                                        <p class="text-center">Date: @Html.DisplayFor(modelItem => eventItem.Date)</p>
+                                        <p class="text-center">Start Time: @Html.DisplayFor(modelItem => eventItem.StartTime)</p>
+                                        <p class="text-center">End Time: @Html.DisplayFor(modelItem => eventItem.EndTime)</p>
+                                        <div class="d-flex justify-content-around">
+
+                                            @if (User.IsInRole(SD.AdminRole))
+                                        {
+                                            <p>
+                                                <a asp-page="./Upsert" class="btn btn-success" asp-route-id="@eventItem.Id"  style="color:#212121;"><b>Edit</b></a>
+                                            </p>
+                                            <p>
+                                                <a asp-page="./Details" class="btn btn-secondary" asp-route-id="@eventItem.Id" style="color:#212121;"><b>Details</b></a>
+                                            </p>
+                                           
+                                        }
+                                        else if(User.IsInRole(SD.CustomerRole))
+                                        {
+                                            
+                                                <p>
+                                                    <a asp-page="./EventSignUp" class="btn btn-success" asp-route-id="@eventItem.Id">Sign Up</a>
+                                                </p>
+                                            
+                                        <p>
+                                                <a asp-page="./Details" class="btn btn-secondary" asp-route-id="@eventItem.Id">Details</a>
+                                            </p>
+                                        }
+                                        else
+                                        {
+                                            
+                                                <p>
+                                                    <a asp-area="Identity" class="btn btn-success" asp-page="/Account/Login" >Sign Up</a>
+                                                </p>
+                                            
+                  
+                                            <p>
+                                                <a asp-area="Identity" class="btn btn-secondary" asp-page="/Account/Login">Details</a>
+                                            </p>
+                                        }
+                                    
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                 
+
+
+
+
+
+

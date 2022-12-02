@@ -1,0 +1,118 @@
+﻿@page
+@model AnimalRescue.Pages.Admin.Animals.UpsertModel
+@{
+}
+<div class="row">
+    <div class="col-md-4 createForm">
+   
+        <form method="post" asp-action="Upsert" enctype="multipart/form-data">
+            <div class="form-row align-items-center">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="col-12 px-3" style="border-bottom:1px solid #325d88">
+                    <h2 class="text-primary">@(Model.animal.Id != 0 ? "Update" : "Add") Animal</h2>
+                </div>
+                <div class="col-auto">
+                    <span asp-validation-for="animal.Name" class="text-danger"></span>
+                    <label class="sr-only control-label createFormLabel" for="inlineFormInputGroup" asp-for="animal.Name"></label>
+                    <input type="text" class="form-control mb-2" id="Name" asp-for="animal.Name" class="form-control">
+                    
+                
+                @if (Model.animal.Id != 0)
+                {
+                    <input type="hidden" asp-for="animal.Id" />}
+                @if (Model.animal != null)
+                {
+                    <div class="col-4 p-4">
+                        <img id="existingImg" src="@Model.animal.Image" style="border-radius:5px; border: 1px solid #bbb9b9; width:100%" />
+                    </div>
+
+                }
+                   <div class="col-3">
+                        <label asp-for="animal.SpeciesId">Species:</label>
+                    </div>
+                <div class="col-9">
+                    @Html.DropDownListFor(m => m.animal.SpeciesId,
+                        Model.SpeciesList,
+                        " - Please select a Species - ",
+                        new { @class = "form-control", @id = "ddlanimal" })
+                    <span class="text-danger" asp-validation-for="animal.SpeciesId"></span>
+                </div>
+                <div class="col-auto">
+                    <span asp-validation-for="animal.Description" class="text-danger"></span>
+
+                    <label class="sr-only control-label createFormLabel" for="inlineFormInputGroup2" asp-for="animal.Description"></label>
+                    <input type="text" class="form-control" id="description" asp-for="animal.Description">
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label >Age: </label>
+                    </div>
+                    <div class="col-9">
+                        <input id="datepicker" value="" asp-for="animal.DoB" type="text" class="form-control" />
+                        <span asp-validation-for="animal.DoB" class="text-danger"></span>
+                    </div>
+                </div>
+                <br/>
+                <div class="col-auto">
+                    <div class="form-group">
+                        <label asp-for="animal.IsAvailable" class="control-label createFormLabel"></label>
+                        <input asp-for="animal.IsAvailable" type="checkbox" value="true" class="form-check-input"/>
+                        <span asp-validation-for="animal.IsAvailable" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-9">
+                    <label asp-for="animal.Image"></label>
+                    <input type="file" id="uploadImgBox" class="form-control" asp-for="animal.Image" onchange="ImageSizeCheck()" accept="image/*" />
+                    <span class="text-danger" asp-validation-for="animal.Image"></span>
+                </div>
+                   
+                <br/>
+                </div>
+                <div class="col-auto">
+                    @if (Model.animal.Id != 0)
+                    {
+                        <button type="submit" class="btn btn-primary form-control">Update</button> }
+                    else
+                    {
+                        <button type="submit" class="btn btn-primary form-control" onclick="return validateInput()">Add</button>}
+                    <div>
+                        <a asp-page="Index">Back to List</a>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script type="text/javascript">
+        $(function() {
+            $("#datepicker").datepicker({ });
+           
+        });
+        function validateInput() {
+            var description = document.getElementById("description").value;
+           
+            var dt = document.getElementById("datepicker").value;
+            var name = document.getElementById("Name").value;
+
+            if (dt.toString() == '') {
+                swal("Error", "Please select Birth Date", "error");
+                return false;
+            }
+            if (description == '') {
+                swal("Error", "Please enter a description", "error");
+                return false;
+            }
+            if (name == '') {
+                swal("Error", "Please enter a Name", "error");
+                return false;
+            }
+           
+            return true;
+        }
+    </script>
+}

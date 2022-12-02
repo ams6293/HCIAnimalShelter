@@ -1,0 +1,7 @@
+Infrastructure/obj/*
+Infrastructure/bin/*
+ApplicationCore/obj/*
+ApplicationCore/bin/*
+AnimalRescue/obj/*
+AnimalRescue/bin/*
+.vs/*

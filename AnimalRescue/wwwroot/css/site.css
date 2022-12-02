@@ -1,0 +1,63 @@
+html {
+  font-size: 14px;
+}
+* {
+    margin: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+.wrapper {
+    min-height: 100%;
+    margin-bottom: -75px;
+}
+
+.footer {
+    height: 75px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+.banner-image-container {
+    background:#a09b9c center center no-repeat;
+    background-size: cover;
+   
+}
+.card-body {
+    background-color: #94bfa2;
+}
+.card-header {
+    background-color: #4aa564;
+}
+.card-border {
+    background-color: #052a17;
+}
+.bd-highlight {
+    background-color: #b3e5cc;
+}
+.createFormLabel {
+    font-family: Copperplate, Papyrus, fantasy;
+}
+.createForm {
+    text-align: center;
+    max-width: 300px;
+    margin: auto;
+    margin-top: 50px;
+    background: lightgreen;
+    border-radius: 25px;
+    padding: 15px;
+}
+.DetailsForm {
+    text-align: center;
+    max-width: 600px;
+    margin: auto;
+    margin-top: 50px;
+    color: #212121;
+    background-color: #94bfa2;
+    border-radius: 25px;
+    padding: 15px;
+}

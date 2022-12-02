@@ -1,0 +1,163 @@
+﻿@page
+@using Infrastructure.Utility
+@model AnimalRescue.Pages.Admin.Animals.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="container">
+<h1>Adoptions</h1>
+@if (User.IsInRole(SD.AdminRole))
+{
+    
+}
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            <b>Search:</b>
+            <input type="text" name="SearchString" value="@Model.CurrentFilter" tabindex="0"/>
+         
+            <input type="submit" value="Search" class="btn"  style="background-color:#4aa564; color:#212121;" tabindex="3">
+          
+            <a class="btn"  style="background-color:#4aa564; color:#212121;" asp-page="./Index"><b>Back to full List</b></a>
+        </p>
+    </div>
+</form>
+
+        @foreach (var item in Model.Animal)
+        {
+        <div class="d-inline-flex p-2 bd-highlight">
+        <div class="card-border bg-info" style="width: 18rem; color:#212121;">
+            <div class="card-header">
+                <h5 class="text-center mb-0">@Html.DisplayFor(modelItem => item.Name)</h5>
+            </div>
+            <div class="card-body" style="color:#212121;">
+                <img src="@item.Image" alt="@item.Description" class="card-img-top p-2 rounded" style="height: 10rem; width: 15rem; color:#212121;"/>
+                <p class="text-center">Name: @Html.DisplayFor(modelItem => item.Name)</p>
+                <p class="text-center">Species: @Html.DisplayFor(modelItem => item.Species.Name)</p>
+
+
+                <p class="text-center">Age: @(Model.getAge(item.DoB))</p>
+                <p class="text-center"> Is Available?: @Html.DisplayFor(modelItem => item.IsAvailable)</p>
+                <div class="d-flex justify-content-around">
+                    @if (User.IsInRole(SD.AdminRole))
+                    {
+
+                        <p>
+                            <a asp-page="./Details" asp-route-id="@item.Id" class="btn btn-success" ><b>Details</b></a>
+                        </p>
+
+                    }
+                    else if (User.IsInRole(SD.CustomerRole))
+                    {
+                        @if (item.IsAvailable == true)
+                        {
+                            <p>
+                                <a class="btn btn-success" asp-page="./RequestMeeting" asp-route-id="@item.Id"  style="color:black">Request Meeting</a>
+                            </p>
+                        }
+
+                        <p>
+                            <a class="btn btn-secondary" asp-page="./Details" asp-route-id="@item.Id"  style="color:black;">Details</a>
+                        </p>
+                    }
+                    else
+                    {
+                        @if (item.IsAvailable == true)
+                        {
+                            <p>
+                                <a class="btn btn-success" asp-area="Identity" asp-page="/Account/Login">Request Meeting</a>
+                            </p>
+                        }
+
+                        <p>
+                            <a class="btn btn-secondary" asp-area="Identity" asp-page="/Account/Login">Details</a>
+                        </p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+        }
+ 
+
+@{
+    var prevDisabled = !Model.Animal.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Animal.HasNextPage ? "disabled" : "";
+}
+</br>
+</br>
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Animal.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @prevDisabled" tabindex="4">
+    Previous
+</a>
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Animal.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @nextDisabled" tabindex="5">
+    Next
+</a>
+@*<hr/>
+<h3>Dogs</h3>
+@foreach (var item in Model.Animal.Where(c=> c.Species.Name == "Dog"))
+{
+    
+    <div class="d-inline-flex p-2 bd-highlight">
+        <div class="card-border bg-info text-white" style="width: 18rem;">
+            <div class="card-header">
+                <h5 class="text-center mb-0">@Html.DisplayFor(modelItem => item.Name)</h5>
+            </div>
+            <div class="card-body text-white">
+                <img src="@item.Image" class="card-img-top p-2 rounded" style="height: 10rem; width: 15rem;"/>
+                <p class="text-center">Name: @Html.DisplayFor(modelItem => item.Name)</p>
+                <p class="text-center">Species: @Html.DisplayFor(modelItem => item.Species.Name)</p>
+
+
+                <p class="text-center">Date Of Birth: @(Model.getAge(item.DoB))</p>
+                <p class="text-center"> Is Available?: @Html.DisplayFor(modelItem => item.IsAvailable)</p>
+                <div class="d-flex justify-content-around">
+                    @if (User.IsInRole(SD.AdminRole))
+                    {
+
+                        <p>
+                            <a asp-page="./Details" asp-route-id="@item.Id">Details</a>
+                        </p>
+
+                    }
+                    else if (User.IsInRole(SD.CustomerRole))
+                    {
+                        @if (item.IsAvailable == true)
+                        {
+                            <p>
+                                <a class="btn btn-success" asp-page="./RequestMeeting" asp-route-id="@item.Id">Request Meeting</a>
+                            </p>
+                        }
+
+                        <p>
+                            <a class="btn btn-secondary" asp-page="./Details" asp-route-id="@item.Id">Details</a>
+                        </p>
+                    }
+                    else
+                    {
+                        @if (item.IsAvailable == true)
+                        {
+                            <p>
+                                <a class="btn btn-success" asp-area="Identity" asp-page="/Account/Login">Request Meeting</a>
+                            </p>
+                        }
+
+                        <p>
+                            <a class="btn btn-secondary" asp-area="Identity" asp-page="/Account/Login">Details</a>
+                        </p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}*@
+
+</div>
